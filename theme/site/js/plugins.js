@@ -22,3 +22,7 @@
 }());
 
 // Place any jQuery/helper plugins in here.
+
+var filters = {
+    'url' : function(t){ return $.trim(t).replace(/\s+/gi,'-').toLowerCase(); } 
+}

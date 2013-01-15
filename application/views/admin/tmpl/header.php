@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title></title>
+        <title><?php echo isset($title) ? $title : config_item('project_title') ?></title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
 
@@ -36,7 +36,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </a>
-                    <a class="brand" href="#">Project name</a>
+                    <a class="brand" href="#"><?php echo config_item('project_title') ?></a>
                     <div class="nav-collapse collapse">
                         <ul class="nav">
                             <li class="active"><a href="#">Home</a></li>
@@ -55,11 +55,11 @@
                                 </ul>
                             </li>
                         </ul>
-                        <form class="navbar-form pull-right">
+                        <!-- <form class="navbar-form pull-right">
                             <input class="span2" type="text" placeholder="Email">
                             <input class="span2" type="password" placeholder="Password">
                             <button type="submit" class="btn">Sign in</button>
-                        </form>
+                        </form> -->
                     </div><!--/.nav-collapse -->
                 </div>
             </div>

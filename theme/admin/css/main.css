@@ -5,6 +5,9 @@
    ========================================================================== */
 
 
+/** Validator **/
+input.error{}
+label.error{color:#f00;font-size: 9px;margin:0;position: relative;top:-8px;}
 
 
 
