@@ -1,0 +1,4 @@
+- add the custom controller class : application/core/controller
+-- add the function loadView(view,data,area)
+
+- add the Content Helper Class
