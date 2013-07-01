@@ -1,0 +1,33 @@
+<ul class="breadcrumb">
+    <li><a href="/ci/admin">Home</a> <span class="divider">/</span></li>
+    <li><a href="/ci/admin/pages">Pages</a> <span class="divider">/</span></li>
+    <li class="active">{{page.title}}</li>
+</ul>
+
+<form name="form" ng-submit="save()">
+    <dl class="dl-horizontal">
+        <dt>Title</dt>
+        <dd>
+            <input type="text" ng-required="true" ng-model="page.title" />
+        </dd>
+
+        <dt>Path</dt>
+        <dd><input type="text" ng-model="page.urlpath" /></dd>
+
+        <dt>Body</dt>
+        <dd><textarea ng-model="page.body"></textarea></dd>
+
+        <dt>Created</dt>
+        <dd>{{page.created}}</dd>
+
+        <dt>Meta Keywords</dt>
+        <dd><input type="text" ng-model="page.meta" /></dd>
+
+        <dt>Is Published ?</dt>
+        <dd><input name="ispublished" ng-checked="page.ispublished" type="checkbox"/></dd>
+    </dl>
+    
+    <p>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </p>
+</form>

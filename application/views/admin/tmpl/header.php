@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<!--[if lt IE 7]>      <html ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html ng-app="myApp" class="no-js"> <!--<![endif]-->
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -20,6 +20,9 @@
         <?php echo Content::link('admin/css/bootstrap-responsive.min.css') ?>
         <?php echo Content::link('admin/css/main.css') ?>
         <?php echo Content::script('admin/js/vendor/modernizr-2.6.1-respond-1.1.0.min.js') ?>
+        <script>
+            var site = {base : '<?php echo site_url() ?>'}
+        </script>
     </head>
     <body>
         <!--[if lt IE 7]>
@@ -65,4 +68,4 @@
             </div>
         </div>
 
-        <div class="container">
+        <div ng-view class="container">

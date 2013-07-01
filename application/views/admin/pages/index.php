@@ -1,28 +1,19 @@
 <ul class="breadcrumb">
-    <li><a href="#">Home</a> <span class="divider">/</span></li>
-    <li><a href="#">Library</a> <span class="divider">/</span></li>
-    <li class="active">Data</li>
+    <li><a href="<?php echo site_url('admin') ?>">Home</a> <span class="divider">/</span></li>
+    <li class="active">Pages</li>
 </ul>
 
-
-<table class="table table-hover">
-    <tr>
-        <th>Title</th>
-        <th>Path</th>
-        <th>Published ?</th>
-        <th>Created By</th>
-    </tr>
-    
-    <?php foreach ($pages as $page): ?>
-    <tr>
-        <td><?php echo $page->title ?></td>
-        <td><?php echo $page->urlpath ?></td>
-        <td><?php echo $page->ispublished ?></td>
-        <td><?php echo $page->createdby ?></td>
-    </tr>
-    <?php endforeach; ?>
-    
-</table>
+<ul class="nav nav-tabs">
+  <li>
+    <?php echo anchor('admin/pages/create','New page', 'class="btn-primary"') ?>
+  </li>
+  <li>
+    <?php echo anchor('admin/pages/index?status=unpiblished','Unpublished') ?>
+  </li>
+  <li>
+    <?php echo anchor('admin/pages/index?status=deleted','Deleted') ?>
+  </li>
+</ul>
 
 <div class="pagination">
     <ul>

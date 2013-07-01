@@ -1,7 +1,7 @@
 <ul class="breadcrumb">
-	<li><a href="#">Home</a> <span class="divider">/</span></li>
-	<li><a href="#">Pages</a> <span class="divider">/</span></li>
-	<li class="active">New</li>
+	<li><a href="<?php echo site_url('admin') ?>">Home</a> <span class="divider">/</span></li>
+	<li><a href="<?php echo site_url('admin/pages') ?>">Pages</a> <span class="divider">/</span></li>
+	<li class="active">New Page</li>
 </ul>
 
 <?php echo validation_errors() ?>
