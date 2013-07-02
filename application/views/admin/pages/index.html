@@ -1,14 +1,20 @@
 <div class="navbar">
     <div class="navbar-inner">
-        <a class="brand" href="#">Title</a>
+        <a class="brand" href="#">Pages Module</a>
         <ul class="nav">
             <li><a href="#/create">New page</a></li>
         </ul>
     </div>
 </div>
 
+<p>
+    Search Pages :
+    <input type="text" ng-model="searchText.title" placeholder="Search ..." class="pull-right" />
+</p>
+
 <table class="table table-hover">
     <tr>
+        <th>Id</th>
         <th>Title</th>
         <th>Path</th>
         <th>Published ?</th>
@@ -16,12 +22,14 @@
         <th>Actions</th>
     </tr>
 
-    <tr ng-repeat="page in pages">
+    <tr ng-repeat="page in pages | filter:searchText">
+        <td>{{page.id}}</td>
         <td>{{page.title}}</td>
         <td>{{page.urlpath}}</td>
         <td>{{page.ispublished}}</td>
         <td>{{page.createdby}}</td>
         <td>
+            <a class="btn" href="/ci/pages/view/{{page.urlpath}}" target="_blank">Preview</a>
             <a class="btn" href="#/view/{{page.id}}" >View</a>
             <a class="btn" href="#/edit/{{page.id}}" >Edit</a>
             <a class="btn" href="#/delete/{{page.id}}" >Delete</a>

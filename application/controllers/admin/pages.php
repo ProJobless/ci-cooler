@@ -14,7 +14,6 @@ class Pages extends CI_Controller {
 
     function Index() {
         $data['title'] = 'pages';
-        $data['pages'] = $this->db->get('pages')->result();
         $this->loadView('pages/index', $data, 'admin');
     }
 
@@ -37,6 +36,12 @@ class Pages extends CI_Controller {
         );
         
         $this->db->update('pages', $data, array('id' => $id));
+        
+        echo json_encode($this->db->affected_rows());
+    }
+    
+    function Delete(){
+        $this->db->delete('pages', array('id' => $this->input->post('id')));
         
         echo json_encode($this->db->affected_rows());
     }

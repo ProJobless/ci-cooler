@@ -15,24 +15,23 @@ app.controller('PagesIndexCtrl', ['$scope', '$http', function($scope, $http) {
         $scope.format = 'M/d/yy h:mm:ss a';
     }]);
 
-app.controller('PagesCreateCtrl', ['$scope', '$http', '$filter', '$route', function($scope, $http, $filter, $route) {
-        $scope.page = {};
+app.controller('PagesCreateCtrl', ['$scope', '$http', '$filter', '$location', function($scope, $http, $filter, $location) {
+        $scope.page = {created: $filter('date')(new Date(), 'yyyy-MM-dd')};
         $scope.page.title = '';
         $scope.$watch('page.title', function(value) {
             $scope.page.urlpath = $filter('urlify')(value);
         });
 
         $scope.save = function() {
-            
             var data = {
                 title: $scope.page.title,
                 body: $scope.page.body,
                 meta: $scope.page.meta,
                 urlpath: $scope.page.urlpath
             };
-            
+
             $.post(site.base + 'admin/pages/create', data, function(data) {
-                $route.reload('#/index');
+                $location.path('#/index');
             });
         };
     }]);
@@ -43,7 +42,27 @@ app.controller('PagesViewCtrl', ['$scope', '$routeParams', '$http', function($sc
         });
     }]);
 
-app.controller('PagesEditCtrl', ['$scope', '$routeParams', '$http', '$filter', function($scope, $routeParams, $http, $filter) {
+app.controller('PagesDeleteCtrl', ['$scope', '$routeParams', '$http', '$location', function($scope, $routeParams, $http, $location) {
+
+        $scope.page = {};
+
+        $http.get(site.base + 'admin/pages/get/' + $routeParams.pageId).success(function(data) {
+            $scope.page = data;
+        });
+
+        $scope.delete = function() {
+            $.post(site.base + 'admin/pages/delete', {id: $scope.page.id}, function() {
+                alert('page deleted');
+                $scope.$apply(function() {
+                    $location.path('/index');
+                });
+            });
+        };
+
+
+    }]);
+
+app.controller('PagesEditCtrl', ['$scope', '$routeParams', '$http', '$filter', '$location', function($scope, $routeParams, $http, $filter, $location) {
         $http.get(site.base + 'admin/pages/get/' + $routeParams.pageId).success(function(data) {
             $scope.page = data;
             $scope.$watch('page.title', function(value) {
@@ -60,11 +79,11 @@ app.controller('PagesEditCtrl', ['$scope', '$routeParams', '$http', '$filter', f
                 urlpath: $scope.page.urlpath
             };
 
-            console.log(data);
-
             $.post(site.base + 'admin/pages/update/' + $routeParams.pageId, data, function(data) {
                 if (data) {
-                    alert('Page saved');
+                    $scope.$apply(function() {
+                        $location.path("/index");
+                    });
                 }
             });
 
@@ -73,5 +92,6 @@ app.controller('PagesEditCtrl', ['$scope', '$routeParams', '$http', '$filter', f
 //                console.log(data);
 //                alert('save success');
 //            });
-        }
+        };
+
     }]);

@@ -16,10 +16,10 @@
         <dd><input type="text" ng-model="page.urlpath" /></dd>
 
         <dt>Body</dt>
-        <dd><textarea ng-model="page.body"></textarea></dd>
+        <dd><textarea ck-editor ng-model="page.body" rows="10"></textarea></dd>
 
         <dt>Created</dt>
-        <dd>{{page.created}}</dd>
+        <dd><input type="text" ng-model="page.created" /></dd>
 
         <dt>Meta Keywords</dt>
         <dd><input type="text" ng-model="page.meta" /></dd>
@@ -30,5 +30,6 @@
     
     <p>
         <button type="submit" class="btn btn-primary">Save</button>
+        <a class="btn" href="#/pages">Cancel</a>
     </p>
 </form>
