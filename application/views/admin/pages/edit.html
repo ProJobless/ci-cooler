@@ -25,8 +25,13 @@
         <dd><input type="text" ng-model="page.meta" /></dd>
 
         <dt>Is Published ?</dt>
-        <dd><input name="ispublished" disabled="disabled" ng-checked="page.ispublished" type="checkbox"/></dd>
+        <dd><input name="ispublished" ng-model="page.ispublished" ng-checked="page.ispublished" type="checkbox"/></dd>
     </dl>
+    
+    <p>
+        Is Published {{page.ispublished | checkmark}}
+        Is Published {{ page.ispublished}}
+    </p>
     
     <p>
         <button type="submit" class="btn btn-primary">Save</button>

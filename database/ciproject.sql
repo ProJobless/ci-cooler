@@ -20,6 +20,9 @@ SET time_zone = "+00:00";
 -- Database: `ciproject`
 --
 
+CREATE DATABASE ciproject;
+USE ciproject;
+
 -- --------------------------------------------------------
 
 --

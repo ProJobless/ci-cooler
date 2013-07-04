@@ -6,6 +6,11 @@ var app = angular.module('myApp.controllers', []);
 
 app.controller('PagesIndexCtrl', ['$scope', '$http', function($scope, $http) {
         $http.get(site.base + 'admin/pages/get').success(function(data) {
+            data.forEach(function(e, i) {
+                //e.ispublished = !!+e.ispublished;
+            });
+
+            console.log(data);
             $scope.pages = data;
         });
 
@@ -34,6 +39,14 @@ app.controller('PagesCreateCtrl', ['$scope', '$http', '$filter', '$location', fu
                 $location.path('#/index');
             });
         };
+
+
+        $scope.uploadComplete = function(content, completed) {
+            $scope.completed = completed;
+            $scope.response = content;
+        };
+
+
     }]);
 
 app.controller('PagesViewCtrl', ['$scope', '$routeParams', '$http', function($scope, $routeParams, $http) {
@@ -64,6 +77,7 @@ app.controller('PagesDeleteCtrl', ['$scope', '$routeParams', '$http', '$location
 
 app.controller('PagesEditCtrl', ['$scope', '$routeParams', '$http', '$filter', '$location', function($scope, $routeParams, $http, $filter, $location) {
         $http.get(site.base + 'admin/pages/get/' + $routeParams.pageId).success(function(data) {
+            data.ispublished = !!data.ispublished;
             $scope.page = data;
             $scope.$watch('page.title', function(value) {
                 $scope.page.urlpath = $filter('urlify')(value);
@@ -76,7 +90,8 @@ app.controller('PagesEditCtrl', ['$scope', '$routeParams', '$http', '$filter', '
                 title: $scope.page.title,
                 body: $scope.page.body,
                 meta: $scope.page.meta,
-                urlpath: $scope.page.urlpath
+                urlpath: $scope.page.urlpath,
+                ispublished: $scope.page.ispublished
             };
 
             $.post(site.base + 'admin/pages/update/' + $routeParams.pageId, data, function(data) {

@@ -3,7 +3,7 @@
 var partialsPath = site.base + '/application/views/admin/';
 
 // Declare app level module which depends on filters, and services
-angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 'myApp.controllers']).
+angular.module('myApp', ['ngUpload','myApp.filters', 'myApp.services', 'myApp.directives', 'myApp.controllers']).
   config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/index', {templateUrl: partialsPath + 'pages/index.html', controller: 'PagesIndexCtrl'});
     $routeProvider.when('/view/:pageId', {templateUrl: partialsPath + 'pages/view.html', controller: 'PagesViewCtrl'});

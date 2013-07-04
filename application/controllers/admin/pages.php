@@ -19,30 +19,36 @@ class Pages extends CI_Controller {
 
     function Get($id = null) {
         header('Content-Type:application/json');
-        
+
         if ($id !== null) {
-            echo json_encode($this->db->get_where('pages', array('id' => $id), 1)->row());
+            $data = $this->db->get_where('pages', array('id' => $id), 1)->row();
+            $data->ispublished = !!$data->ispublished;
         } else {
-            echo json_encode($this->db->get('pages')->result());
+            $data = $this->db->get('pages')->result();
+            foreach ($data as $k => $row) {
+                $data[$k]->ispublished = !!$row->ispublished;
+            }
         }
+        echo json_encode($data);
     }
-    
-    function Update($id){
-        
+
+    function Update($id) {
+
         $data = array(
             'title' => $this->input->post('title'),
             'body' => $this->input->post('body'),
             'urlpath' => $this->input->post('urlpath'),
+            'ispublished' => $this->input->post('ispublished'),
         );
-        
+
         $this->db->update('pages', $data, array('id' => $id));
-        
+
         echo json_encode($this->db->affected_rows());
     }
-    
-    function Delete(){
+
+    function Delete() {
         $this->db->delete('pages', array('id' => $this->input->post('id')));
-        
+
         echo json_encode($this->db->affected_rows());
     }
 
@@ -74,6 +80,25 @@ class Pages extends CI_Controller {
             $this->loadView('pages/view', $data, 'admin');
         } else {
             show_404();
+        }
+    }
+
+    function upload() {
+        $config['upload_path'] = APPPATH .  '/uploads/';
+        $config['allowed_types'] = 'gif|jpg|png';
+        $config['max_size'] = '600';
+        $config['max_width'] = '3000';
+        $config['max_height'] = '2000';
+
+        $this->load->library('upload', $config);
+
+        if (!$this->upload->do_upload('file')) {
+            $error = array('error' => $this->upload->display_errors());
+            
+            echo json_encode($error);
+        } else {
+            $data = array('upload_data' => $this->upload->data());
+            echo json_encode($data);
         }
     }
 

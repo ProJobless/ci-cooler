@@ -12,6 +12,7 @@
         <?php echo Content::script('admin/js/plugins.js') ?>
         <?php echo Content::script('admin/js/main.js') ?>
         <?php echo Content::script('admin/js/angular.min.js') ?>
+        <?php echo Content::script('admin/js/ng-upload.js') ?>
         <?php echo Content::script('admin/js/app/app.js') ?>
         <?php echo Content::script('admin/js/app/controllers.js') ?>
         <?php echo Content::script('admin/js/app/directives.js') ?>

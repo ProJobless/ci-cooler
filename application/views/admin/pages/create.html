@@ -4,7 +4,7 @@
     <li class="active">{{page.title}}</li>
 </ul>
 
-<form name="form" ng-submit="save()">
+<form name="form"  action="/ci/admin/pages/upload/" ng-upload>
     <dl class="dl-horizontal">
         <dt>Title</dt>
         <dd>
@@ -25,10 +25,26 @@
 
         <dt>Is Published ?</dt>
         <dd><input name="ispublished" ng-checked="page.ispublished" type="checkbox"/></dd>
+
+        <dt>Upload</dt>
+        <dd>
+            <input type="file" name="file"></input>
+            <input type="submit" value="Upload" 
+                   upload-submit="uploadComplete(content, completed)"></input>
+        </dd>
     </dl>
-    
+    <div>Completed : {{ completed | checkmark}}</div>
+        
+    <div class="alert alert-info">Server Response: {{response | json}}</div>
+    <div>
+        Fullname: <b>{{response.fullname}}</b><br />
+        Gender: <b>{{response.gender}}</b><br />
+        Favourite Color: <span ng-style="response.style">{{response.color}}</span><br />
+        Picture: {{response.pictureUrl}}
+    </div>
+
     <p>
-        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" bg-click="save()" class="btn btn-primary">Save</button>
         <a href="#/pages" class="btn">Cancel</a>
     </p>
 </form>
