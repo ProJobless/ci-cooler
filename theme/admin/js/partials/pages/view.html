@@ -1,0 +1,40 @@
+<ul class="breadcrumb">
+    <li><a href="/ci/admin">Home</a> <span class="divider">/</span></li>
+    <li><a href="/ci/admin/pages">Pages</a> <span class="divider">/</span></li>
+    <li class="active">{{page.title}}</li>
+</ul>
+
+
+<div class="row-fluid">
+    <div class="span5">
+        <dl class="dl-horizontal">
+            <dt>Title</dt>
+            <dd>
+                {{page.title}}
+            </dd>
+
+            <dt>Path</dt>
+            <dd>{{page.urlpath}}</dd>
+
+            <dt>Created</dt>
+            <dd>{{page.created || 'Undefined'}}</dd>
+
+            <dt>Meta Keywords</dt>
+            <dd>{{page.meta}}</dd>
+
+            <dt>Is Published ?</dt>
+            <dd><input name="ispublished" disabled="disabled" ng-checked="page.ispublished" type="checkbox" /></dd>
+        </dl>
+    </div>
+    <div class="span7">
+        <strong>Page body</strong>
+        <p ng-bind-html="page.body"></p>
+    </div>
+</div>
+
+<hr/>
+<p class="pull-right">
+    <a href="#/pages/edit/{{page.id}}" class="btn btn-primary">Edit</a>
+    <a href="#/pages/index" class="btn">Back</a>
+
+</p>

@@ -23,6 +23,12 @@ angular.module('myApp.filters', []).
     return function(input) {
         return input ? '\u2713' : '\u2718';
     };
+})
+        .filter('label', function() {
+    return function(input, type, text) {
+        console.log(input);
+        return input ? '<span class="label label-' + type + '">' + text + '</span>' : '';
+    };
 });
 
 

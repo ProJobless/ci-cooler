@@ -10,11 +10,7 @@ class Pages extends CI_Controller {
         $this->load->database();
         $this->load->library('form_validation');
         $this->load->helper('array');
-    }
-
-    function Index() {
-        $data['title'] = 'pages';
-        $this->loadView('pages/index', $data, 'admin');
+        header('Content-Type:application/json');
     }
 
     function Get($id = null) {
@@ -23,54 +19,53 @@ class Pages extends CI_Controller {
         if ($id !== null) {
             $data = $this->db->get_where('pages', array('id' => $id), 1)->row();
             $data->ispublished = !!$data->ispublished;
+            $data->isdraft = !!$data->isdraft;
         } else {
             $data = $this->db->get('pages')->result();
             foreach ($data as $k => $row) {
                 $data[$k]->ispublished = !!$row->ispublished;
+                $data[$k]->isdraft = !!$row->isdraft;
             }
         }
         echo json_encode($data);
     }
 
     function Update($id) {
-
-        $data = array(
-            'title' => $this->input->post('title'),
-            'body' => $this->input->post('body'),
-            'urlpath' => $this->input->post('urlpath'),
-            'ispublished' => $this->input->post('ispublished'),
-        );
-
+        $data = elements(array('title', 'body', 'meta', 'isdraft', 'ispublished'), $this->input->post());
         $this->db->update('pages', $data, array('id' => $id));
-
         echo json_encode($this->db->affected_rows());
     }
 
     function Delete() {
+        header('Content-Type:application/json');
+
         $this->db->delete('pages', array('id' => $this->input->post('id')));
 
         echo json_encode($this->db->affected_rows());
     }
 
     function Create() {
+        header('Content-Type:application/json');
+
         // Set the validation
         $this->form_validation->set_rules('title', 'Title', 'required');
 
         if ($this->form_validation->run() !== false) {
 
             // Insert into database 
-            $form = elements(array('title', 'body', 'created', 'meta'), $this->input->post());
-            $form['created'] = element('created', $form, date('Y-m-d H:i:s'));
+            $form = elements(array('title', 'body', 'created', 'meta', 'isdraft', 'ispublished'), $this->input->post());
 
+            $form['created'] = element('created', $form, date('Y-m-d H:i:s'));
             $this->db->insert('pages', $form);
 
-            echo json_encode($this->db->affected_rows());
+            echo json_encode(array('page' => array('id' => $this->db->insert_id())));
         } else {
             echo json_encode(FALSE);
         }
     }
 
     function view($id) {
+        header('Content-Type:application/json');
 
         $data['page'] = $this->db->where(array('id' => $id))->limit(1)->get('pages')->row();
 
@@ -84,7 +79,7 @@ class Pages extends CI_Controller {
     }
 
     function upload() {
-        $config['upload_path'] = APPPATH .  '/uploads/';
+        $config['upload_path'] = APPPATH . '/uploads/';
         $config['allowed_types'] = 'gif|jpg|png';
         $config['max_size'] = '600';
         $config['max_width'] = '3000';
@@ -94,7 +89,7 @@ class Pages extends CI_Controller {
 
         if (!$this->upload->do_upload('file')) {
             $error = array('error' => $this->upload->display_errors());
-            
+
             echo json_encode($error);
         } else {
             $data = array('upload_data' => $this->upload->data());
