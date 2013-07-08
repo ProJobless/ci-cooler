@@ -39,20 +39,18 @@
             <textarea ck-editor ng-model="page.body" rows="10"></textarea>
 
 
-            <strong>Picture</strong>
+            <hr/>
+            <p>
+                <strong>Picture</strong>
+            </p>
             <input type="file" name="file"></input>
-            <input type="submit" value="Upload" 
+            <input type="submit"  class="btn btn-primary" value="Upload" 
                    upload-submit="uploadComplete(content, completed)"></input>
 
-            <div>Completed : {{ completed | checkmark}}</div>
+            <!--<div>Completed : {{ completed | checkmark}}</div>-->
 
-            <div class="alert alert-info">Server Response: {{response | json}}</div>
-            <div>
-                Fullname: <b>{{response.fullname}}</b><br />
-                Gender: <b>{{response.gender}}</b><br />
-                Favourite Color: <span ng-style="response.style">{{response.color}}</span><br />
-                Picture: {{response.pictureUrl}}
-            </div>
+            <!--<div class="alert alert-info">Server Response: {{response | json}}</div>-->
+            <img ng-show="response.upload_data.file_name.length > 0" src="/ci/application/uploads/{{response.upload_data.file_name}}" width="180" class="img-polaroid" />
         </div>
     </div>
 

@@ -1,13 +1,32 @@
 'use strict';
 
-var partialsPath = site.base + '/theme/admin/js/partials/';
+var partialsPath = site.base + 'theme/admin/js/partials/';
+var modulePath = site.base + 'admin/modules/renderView/';
 var routes = [
     
     //Admin
     ['/index', partialsPath + 'index/index.html', 'IndexCtrl'],
     
+    // Modules
+    ['/modules', partialsPath + 'index/modules.html', 'ModulesCtrl'],
+    ['/modules/:id/index', partialsPath + 'modules/blank.html', 'ModulesIndexCtrl'],
+    ['/modules/:id/view/:rowId', modulePath, 'ModulesViewCtrl'],
+    ['/modules/:id/create', modulePath, 'ModulesCreateCtrl'],
+    ['/modules/:id/edit/:rowId', modulePath, 'ModulesEditCtrl'],
+    
     // Account
     ['/account/login', partialsPath + 'account/login.html', 'AccLoginCtrl'],
+    
+    // Lists
+    ['/lists/index', partialsPath + 'lists/index.html', 'ListsIndexCtrl'],
+    ['/lists/view/:id', partialsPath + 'lists/view.html', 'ListsViewCtrl'],
+    ['/lists/edit/:id', partialsPath + 'lists/edit.html', 'ListsEditCtrl'],
+    ['/lists/delete/:id', partialsPath + 'lists/delete.html', 'ListsDeleteCtrl'],
+    ['/lists/create', partialsPath + 'lists/create.html', 'ListsCreateCtrl'],
+    
+    ['/lists/:id/newfield', partialsPath + 'lists/newfield.html', 'ListsCreateFieldCtrl'],
+    
+    
     
     // Pages
     ['/pages/index', partialsPath + 'pages/index.html', 'PagesIndexCtrl'],

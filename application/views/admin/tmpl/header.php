@@ -31,7 +31,7 @@
 
         <!-- This code is taken from http://twitter.github.com/bootstrap/examples/hero.html -->
 
-        <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar navbar-fixed-top">
             <div class="navbar-inner">
                 <div class="container">
                     <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -43,7 +43,7 @@
                     <div class="nav-collapse collapse">
                         <ul class="nav">
                             <li class="active"><a href="#/index">Home</a></li>
-                            <li><a href="#about">About</a></li>
+                            <li><a href="#/modules">Installed Modules</a></li>
                             <li><a href="#contact">Contact</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
@@ -62,4 +62,4 @@
             </div>
         </div>
 
-        <div ng-view class="container">
+        <div id="view" ng-view class="container">

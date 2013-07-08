@@ -12,6 +12,35 @@ app.controller('IndexCtrl', ['$scope', function($scope) {
 
     }]);
 
+app.controller('ModulesCtrl', ['$scope', function($scope) {
+        $scope.working = true;
+
+        $.get(site.base + 'admin/modules/get', function(r) {
+            $scope.modules = r;
+            $scope.$apply(function() {
+                $scope.working = false;
+            })
+        });
+    }]);
+
+app.controller('ModulesIndexCtrl', ['$scope', '$routeParams', '$route', '$compile', function($scope, $routeParams, $route, $compile) {
+        $scope.working = true;
+        $route.current.templateUrl = site.base + 'admin/modules/renderView/index/' + $routeParams.id;
+        $.get($route.current.templateUrl, function(data) {
+
+
+            $.get(site.base + 'admin/modules/get/' + $routeParams.id, function(r) {
+                $scope.module = r;
+                $scope.$apply(function() {
+                    $('#view').html($compile(data)($scope));
+                    $scope.working = false;
+                });
+            });
+        });
+
+
+    }]);
+
 ///////////////
 // Account
 ///////////////
@@ -19,6 +48,115 @@ app.controller('IndexCtrl', ['$scope', function($scope) {
 app.controller('AccLoginCtrl', ['$scope', function($scope) {
 
     }]);
+
+
+///////////////
+// Lists
+///////////////
+
+app.controller('ListsIndexCtrl', ['$scope', function($scope) {
+        $scope.working = true;
+        $.get(site.base + 'admin/lists/get', function(r) {
+            $scope.$apply(function() {
+                $scope.lists = r;
+                $scope.working = false;
+            });
+        });
+    }]);
+
+app.controller('ListsViewCtrl', ['$scope', '$routeParams', function($scope, $routeParams) {
+        $scope.working = true;
+        //get member
+        $.get(site.base + 'admin/lists/get/' + $routeParams.id, function(r) {
+            $scope.$apply(function() {
+                $scope.list = r;
+                $scope.working = false;
+            });
+        });
+
+    }]);
+
+app.controller('ListsCreateCtrl', ['$scope', '$filter', '$routeParams', function($scope, $filter, $routeParams) {
+        $scope.working = false;
+
+        $scope.list = {created: $filter('date')(new Date(), 'yyyy-MM-dd'), title: ''};
+        $scope.$watch('list.title', function(value) {
+            $scope.list.internaltitle = $filter('urlify')(value);
+        });
+
+        $scope.save = function() {
+            $scope.working = true;
+            $.post(site.base + 'admin/lists/set/', $scope.list, function(r) {
+                $scope.$apply(function() {
+                    $scope.working = false;
+                    $scope.saved = true;
+                });
+            });
+        };
+
+    }]);
+
+app.controller('ListsEditCtrl', ['$scope', '$filter', '$routeParams', function($scope, $filter, $routeParams) {
+        $scope.working = true;
+
+        //get list
+        $.get(site.base + 'admin/lists/get/' + $routeParams.id, function(r) {
+            $scope.$apply(function() {
+                $scope.list = r;
+
+                $scope.$watch('list.title', function(value) {
+                    $scope.list.internaltitle = $filter('urlify')(value);
+                });
+
+                $scope.working = false;
+            });
+        });
+
+        $scope.save = function() {
+            $scope.working = true;
+            $.post(site.base + 'admin/lists/set/' + $routeParams.id, $scope.list, function(r) {
+                $scope.$apply(function() {
+                    $scope.working = false;
+                    $scope.saved = true;
+                });
+            });
+        };
+
+    }]);
+
+app.controller('ListsCreateFieldCtrl', ['$scope', '$routeParams', '$filter', function($scope, $routeParams, $filter) {
+        $scope.working = true;
+        $scope.field = {created: $filter('date')(new Date(), 'yyyy-MM-dd'), title: '', type: 1};
+        $scope.$watch('field.title', function(value) {
+            $scope.field.internaltitle = $filter('urlify')(value);
+        });
+
+        $.get(site.base + 'admin/lists/getTypes', function(types) {
+
+            $.get(site.base + 'admin/lists/get/' + $routeParams.id, function(r) {
+                $scope.list = r;
+                $scope.$apply(function() {
+                    $scope.types = types;
+                    $scope.working = false;
+                });
+            });
+
+
+        });
+
+        $scope.addField = function() {
+
+            $.post(site.base + 'admin/lists/addField/' + $routeParams.id, $scope.field, function(r) {
+                $scope.$apply(function() {
+                    $scope.working = false;
+                    $scope.saved = true;
+                });
+            });
+        };
+
+
+    }]);
+
 
 ///////////////
 // Members
@@ -34,7 +172,6 @@ app.controller('MembersIndexCtrl', ['$scope', function($scope) {
             });
         });
     }]);
-
 app.controller('MembersCreateCtrl', ['$scope', function($scope) {
         $scope.working = true;
         $scope.success = false;
@@ -66,7 +203,6 @@ app.controller('MembersCreateCtrl', ['$scope', function($scope) {
         };
 
     }]);
-
 app.controller('MembersEditCtrl', ['$scope', '$routeParams', function($scope, $routeParams) {
         $scope.working = true;
         $scope.success = false;
@@ -102,8 +238,6 @@ app.controller('MembersEditCtrl', ['$scope', '$routeParams', function($scope, $r
         };
 
     }]);
-
-
 app.controller('MembersViewCtrl', ['$scope', '$routeParams', function($scope, $routeParams) {
         $scope.working = true;
 
@@ -133,8 +267,6 @@ app.controller('PagesIndexCtrl', ['$scope', '$http', function($scope, $http) {
             data.forEach(function(e, i) {
                 //e.ispublished = !!+e.ispublished;
             });
-
-            console.log(data);
             $scope.pages = data;
         });
 
@@ -143,7 +275,6 @@ app.controller('PagesIndexCtrl', ['$scope', '$http', function($scope, $http) {
         $scope.query = '';
         $scope.format = 'M/d/yy h:mm:ss a';
     }]);
-
 app.controller('PagesCreateCtrl', ['$scope', '$http', '$filter', '$location', function($scope, $http, $filter, $location) {
 
         $scope.working = false;
@@ -205,7 +336,7 @@ app.controller('PagesCreateCtrl', ['$scope', '$http', '$filter', '$location', fu
             $scope.save(1, function() {
                 $scope.$apply(function() {
                     $scope.working = false;
-                    alert($scope.working + '');
+//                    alert($scope.working + '');
                 });
             });
         }, 3000);
@@ -218,13 +349,11 @@ app.controller('PagesCreateCtrl', ['$scope', '$http', '$filter', '$location', fu
 
 
     }]);
-
 app.controller('PagesViewCtrl', ['$scope', '$routeParams', '$http', function($scope, $routeParams, $http) {
         $http.get(site.base + 'admin/pages/get/' + $routeParams.pageId).success(function(data) {
             $scope.page = data;
         });
     }]);
-
 app.controller('PagesDeleteCtrl', ['$scope', '$routeParams', '$http', '$location', function($scope, $routeParams, $http, $location) {
         $scope.working = false;
 
@@ -247,7 +376,6 @@ app.controller('PagesDeleteCtrl', ['$scope', '$routeParams', '$http', '$location
 
 
     }]);
-
 app.controller('PagesEditCtrl', ['$scope', '$routeParams', '$http', '$filter', '$location', function($scope, $routeParams, $http, $filter, $location) {
         $scope.saved = false;
         $scope.working = false;
