@@ -1,7 +1,7 @@
 <ul class="breadcrumb">
     <li><a href="/ci/admin">Home</a> <span class="divider">/</span></li>
-    <li><a href="/ci/admin/pages">Pages</a> <span class="divider">/</span></li>
-    <li class="active">{{page.title}}</li>
+    <li><a href="#/lists/index">Lists</a> <span class="divider">/</span></li>
+    <li class="active">{{list.internaltitle}} - [{{list.title}}]</li>
 </ul>
 
 <div class="alert alert-warning" ng-show="working">
@@ -9,43 +9,49 @@
 </div>
 
 <div class="alert alert-danger">
-    <strong>Delete Page: </strong> Are you sure you want to delete this page <i>{{page.title}}</i>
+    <strong>Delete List</strong> Are you sure you want to delete this list ?
 </div>
 
-<form ng-submit="delete()">
-    <div class="row-fluid">
-        <div class="span5">
-            <dl class="dl-horizontal">
-                <dt>Title</dt>
-                <dd>
-                    {{page.title}}
-                </dd>
+<div class="row-fluid">
+    <div class="span5">
+        <dl class="dl-horizontal">
+            <dt>Title</dt>
+            <dd>{{list.title}}</dd>
 
-                <dt>Path</dt>
-                <dd>{{page.urlpath}}</dd>
-                <dt>Created</dt>
-                <dd>{{page.created || 'Undefined'}}</dd>
+            <dt>Internal Title</dt>
+            <dd>{{list.internaltitle}}</dd>
 
-                <dt>Meta Keywords</dt>
-                <dd>{{page.meta}}</dd>
+            <dt>Created</dt>
+            <dd>{{list.created || 'Undefined'}}</dd>
 
-                <dt>Is Published ?</dt>
-                <dd><input name="ispublished" disabled="disabled" ng-checked="page.ispublished" type="checkbox" /></dd>
-            </dl>
-        </div>
-        <div class="span7">
-            <strong>Page body</strong>
-            <p ng-bind-html="page.body"></p>
-        </div>
+            <dt>Description</dt>
+            <dd>{{list.description}}</dd>
 
-
+            <dt>Is Published ?</dt>
+            <dd><input name="ispublished" disabled="disabled" ng-checked="list.ispublished" type="checkbox" /></dd>
+        </dl>
     </div>
-    <hr/>
-    <p class="pull-right">
-        <input type="hidden" ng-model="page.id" />
-        <button ng-disabled="working" type="submit" class="btn btn-danger">Delete</button>
-        <a href="#/pages" class="btn">Back</a>
-    </p>
-
-
-</form>
+    <div class="span7">
+        <strong>List fields</strong>
+        <p>
+            <input type="text" class="span3" ng-model="searchField" placeholder="Search the fields..."/>
+        </p>
+        <table class="table table-bordered table-striped">
+            <tr>
+                <th>Title</th>
+                <th>Type</th>
+                <th>Attributes</th>
+            </tr>
+            <tr ng-repeat="field in list.fields | filter:searchField">
+                <td>{{field.title}}</td>
+                <td>{{field.type}}</td>
+                <td>{{field.attrs}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<hr/>
+<p class="pull-right">
+    <button ng-disabled="working" ng-click="delete()" class="btn btn-danger">Delete</button>
+    <a href="#/lists/view/{{list.id}}" class="btn">Back</a>
+</p>

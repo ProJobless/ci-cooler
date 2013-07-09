@@ -4,6 +4,9 @@
     <li class="active">{{list.internaltitle}} - [{{list.title}}]</li>
 </ul>
 
+<div class="alert alert-warning" ng-show="!list.table_exists">
+    <strong>Table not exists !</strong> the table of this list is not found in the database
+</div>
 
 <div class="row-fluid">
     <div class="span5">
@@ -21,12 +24,12 @@
             <dd>{{list.description}}</dd>
 
             <dt>Is Published ?</dt>
-            <dd><input name="ispublished" disabled="disabled" ng-checked="page.ispublished" type="checkbox" /></dd>
+            <dd><input name="ispublished" disabled="disabled" ng-checked="list.ispublished" type="checkbox" /></dd>
         </dl>
     </div>
     <div class="span7">
         <strong>List fields</strong>
-        <p>
+        <p ng-show="list.fields.length">
             <input type="text" class="span3" ng-model="searchField" placeholder="Search the fields..."/>
         </p>
         <table class="table table-bordered table-striped">

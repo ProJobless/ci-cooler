@@ -8,18 +8,20 @@ class Lists extends CI_Controller {
         parent::__construct();
         $this->load->database();
         $this->load->helper('array');
+        $this->load->dbforge();
         header('Content-Type:application/json');
     }
 
     function Get($id = FALSE) {
 
-        $data = $this->db->from($this->table);
 
         if ($id) {
-            $data = $data->where(array('id' => $id))->get()->row();
-            $data->fields = $this->db->where(array('listid' => $id))->get('fields')->result();
+            $data = $this->_getList($id);
         } else {
-            $data = $data->get()->result();
+            $data = $this->db->from($this->table)->get()->result();
+            foreach ($data as $row) {
+                $row->ispublished = !!$row->ispublished;
+            }
         }
 
         echo json_encode($data);
@@ -29,23 +31,25 @@ class Lists extends CI_Controller {
 
         $response = FALSE;
 
-        $data = elements(array('title', 'internaltitle', 'mapped_table' , 'description'), $this->input->post());
-        
+        $data = elements(array('title', 'internaltitle', 'mapped_table', 'description', 'ispublished'), $this->input->post());
+
 
         if (!$id) {
             // create
-            
+
             $data['mapped_table'] = 'lists_' . $data['internaltitle'];
             // Create the table
             $this->load->dbforge();
             $this->dbforge->add_field('id');
             $this->dbforge->create_table($data['mapped_table']);
 
+            $data['created'] = date('Y-m-d');
             $this->db->insert($this->table, $data);
             $id = $this->db->insert_id();
             $response = $id;
         } else {
             // update
+            $data['modified'] = date('Y-m-d');
             $this->db->update($this->table, $data, array('id' => $id));
             $response = $this->db->affected_rows();
         }
@@ -57,7 +61,9 @@ class Lists extends CI_Controller {
 
     function Delete($id) {
         try {
+            $list = $this->_getList($id, FALSE, FALSE);
             $this->db->delete($this->table, array('id' => $id));
+            $this->dbforge->drop_table($list->mapped_table);
             $response = TRUE;
         } catch (Exception $exc) {
             $response = FALSE;
@@ -106,7 +112,6 @@ class Lists extends CI_Controller {
 
     function AddField($listId) {
 
-        $this->load->dbforge();
 
         $list = $this->db->where(array('id' => $listId))->limit(1)->get($this->table)->row();
         $field = elements(array('title', 'internaltitle', 'ispublished', 'type', 'description', 'attrs'), $this->input->post());
@@ -122,6 +127,43 @@ class Lists extends CI_Controller {
         $field['listid'] = $listId;
         $this->db->insert('fields', $field);
         return json_encode(array($this->db->affected_rows(), $field));
+    }
+
+    function DeleteField($fieldId) {
+        try {
+            $field = $this->_getField($fieldId);
+            $this->db->delete('fields', array('id' => $fieldId));
+            $this->dbforge->drop_column($field->list->mapped_table, $field->internaltitle);
+            echo json_encode($field);
+        } catch (Exception $exc) {
+            // echo $exc->getTraceAsString();
+            echo json_encode(FALSE);
+        }
+    }
+
+    function GetField($fieldId) {
+        echo json_encode($this->_getField($fieldId));
+    }
+
+    private function _getField($fieldId) {
+        $field = $this->db->get_where('fields', array('id' => $fieldId), 1)->row();
+        $field->list = $this->db->get_where($this->table, array('id' => $field->listid), 1)->row();
+        return $field;
+    }
+
+    private function _getList($listId, $getFields = TRUE, $checkIfTableExists = TRUE) {
+        $data = $this->db->from($this->table)->where(array('id' => $listId))->get()->row();
+        $data->ispublished = !!$data->ispublished;
+
+        if ($getFields) {
+            $data->fields = $this->db->where(array('listid' => $listId))->get('fields')->result();
+        }
+
+        if ($checkIfTableExists) {
+            $data->table_exists = !!$this->db->table_exists($data->mapped_table);
+        }
+
+        return $data;
     }
 
 }

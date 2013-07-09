@@ -10,7 +10,7 @@ class Pages extends CI_Controller {
     }
 
     function View($path) {
-        $data['page'] = $this->db->get('pages', array('urlpath' => $path))->row();
+        $data['page'] = $this->db->get_where('pages', array('urlpath' => $path), 1)->row();
         $data['title'] = $data['page']->title;
          $this->loadView('pages/view', $data);
     }

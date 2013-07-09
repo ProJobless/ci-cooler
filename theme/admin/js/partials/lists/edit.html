@@ -8,6 +8,10 @@
     Working ... 
 </div>
 
+<div class="alert alert-warning" ng-show="!list.table_exists">
+    <strong>Table not exists !</strong> the table of this list is not found in the database
+</div>
+
 <div class="alert alert-success" ng-show="saved">
     <strong>List saved</strong>
 </div>
@@ -25,18 +29,18 @@
                 <dd><input type="text" ng-model="list.internaltitle" /></dd>
 
                 <dt>Mapped Table</dt>
-                <dd><input type="text" ng-model="list.mapped_table" /></dd>
+                <dd>{{list.mapped_table}}</dd>
 
                 <dt>Description</dt>
                 <dd><textarea ng-model="list.description" ></textarea></dd>
 
                 <dt>Is Published ?</dt>
-                <dd><input name="ispublished" ng-model="page.ispublished" ng-checked="page.ispublished" type="checkbox"/></dd>
+                <dd><input name="ispublished" ng-model="list.ispublished" ng-checked="list.ispublished" type="checkbox"/></dd>
             </dl>
         </div>
         <div class="span7">
             <strong>List fields</strong>
-            <p>
+            <p ng-show="list.fields.length">
                 <input type="text" class="span3" ng-model="searchField" placeholder="Search the fields..."/>
             </p>
             <table class="table table-bordered table-striped">
@@ -44,14 +48,19 @@
                     <th>Title</th>
                     <th>Type</th>
                     <th>Attributes</th>
+                    <th></th>
                 </tr>
                 <tr ng-repeat="field in list.fields | filter:searchField">
                     <td>{{field.title}}</td>
                     <td>{{field.type | type}}</td>
                     <td>{{field.attrs}}</td>
+                    <td>
+                        <a href="#/lists/{{list.id}}/editfield/{{field.id}}" class="btn btn-mini">Edit</a>
+                        <a href="#/lists/{{list.id}}/deletefield/{{field.id}}" class="btn btn-mini btn-danger">Delete</a>
+                    </td>
                 </tr>
             </table>
-            
+
             <p class="pull-right">
                 <a href="#/lists/{{list.id}}/newfield" class="btn btn-small btn-primary">Add field</a>
             </p>

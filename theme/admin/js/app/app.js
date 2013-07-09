@@ -10,9 +10,10 @@ var routes = [
     // Modules
     ['/modules', partialsPath + 'index/modules.html', 'ModulesCtrl'],
     ['/modules/:id/index', partialsPath + 'modules/blank.html', 'ModulesIndexCtrl'],
-    ['/modules/:id/view/:rowId', modulePath, 'ModulesViewCtrl'],
-    ['/modules/:id/create', modulePath, 'ModulesCreateCtrl'],
-    ['/modules/:id/edit/:rowId', modulePath, 'ModulesEditCtrl'],
+    ['/modules/:id/create', partialsPath + 'modules/blank.html', 'ModulesCreateCtrl'],
+    ['/modules/:id/view/:rowId', partialsPath + 'modules/blank.html', 'ModulesViewCtrl'],
+    ['/modules/:id/edit/:rowId', partialsPath + 'modules/blank.html', 'ModulesEditCtrl'],
+    ['/modules/:id/delete/:rowId', partialsPath + 'modules/blank.html', 'ModulesDeleteCtrl'],
     
     // Account
     ['/account/login', partialsPath + 'account/login.html', 'AccLoginCtrl'],
@@ -25,6 +26,8 @@ var routes = [
     ['/lists/create', partialsPath + 'lists/create.html', 'ListsCreateCtrl'],
     
     ['/lists/:id/newfield', partialsPath + 'lists/newfield.html', 'ListsCreateFieldCtrl'],
+    ['/lists/:id/editfield/:fieldId', partialsPath + 'lists/editfield.html', 'ListsEditFieldCtrl'],
+    ['/lists/:id/deletefield/:fieldId', partialsPath + 'lists/deletefield.html', 'ListsDeleteFieldCtrl'],
     
     
     
