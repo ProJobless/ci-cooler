@@ -11,7 +11,7 @@
         <?php echo Content::script('admin/js/vendor/bootstrap.min.js') ?>
         <?php echo Content::script('admin/js/plugins.js') ?>
         <?php echo Content::script('admin/js/main.js') ?>
-        <?php echo Content::script('admin/js/angular.min.js') ?>
+        <?php echo Content::script('admin/js/angular.js') ?>
         <?php echo Content::script('admin/js/angular-sanitize.js') ?>
         <?php echo Content::script('admin/js/ng-upload.js') ?>
         <?php echo Content::script('admin/js/app/app.js') ?>

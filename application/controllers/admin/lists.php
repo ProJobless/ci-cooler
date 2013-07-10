@@ -103,7 +103,7 @@ class Lists extends CI_Controller {
                 'label' => 'images'
             ),
             array(
-                'id' => 5,
+                'id' => 6,
                 'label' => 'files'
             ),
         );
@@ -111,17 +111,12 @@ class Lists extends CI_Controller {
     }
 
     function AddField($listId) {
-
-
         $list = $this->db->where(array('id' => $listId))->limit(1)->get($this->table)->row();
         $field = elements(array('title', 'internaltitle', 'ispublished', 'type', 'description', 'attrs'), $this->input->post());
 
         // Create new column in the table
         $this->dbforge->add_column($list->mapped_table, array(
-            $field['internaltitle'] => array(
-                'type' => 'VARCHAR',
-                'constraint' => 100,
-            )
+            $field['internaltitle'] => $this->_getFieldDBType($field['type'])
         ));
 
         $field['listid'] = $listId;
@@ -164,6 +159,24 @@ class Lists extends CI_Controller {
         }
 
         return $data;
+    }
+
+    private function _getFieldDBType($fieldType) {
+        switch ($fieldType) {
+            case 1:
+                return array('type' => 'VARCHAR', 'constraint' => 255);
+            case 2:
+                return array('type' => 'INT', 'constraint' => 10);
+            case 3:
+                return array('type' => 'TEXT');
+            case 4:
+                return array('type' => 'DATETIME');
+            case 5:
+                return array('type' => 'TEXT');
+            default:
+                return array('type' => 'VARCHAR', 'constraint' => 255);
+                break;
+        }
     }
 
 }

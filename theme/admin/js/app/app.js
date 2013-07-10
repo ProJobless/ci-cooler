@@ -6,6 +6,7 @@ var routes = [
     
     //Admin
     ['/index', partialsPath + 'index/index.html', 'IndexCtrl'],
+    ['/test', partialsPath + 'index/test.html', 'TestCtrl'],
     
     // Modules
     ['/modules', partialsPath + 'index/modules.html', 'ModulesCtrl'],

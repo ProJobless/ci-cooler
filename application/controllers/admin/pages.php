@@ -78,7 +78,7 @@ class Pages extends CI_Controller {
         }
     }
 
-    function upload() {
+    function upload($fieldName = 'file') {
         $config['upload_path'] = APPPATH . '/uploads/';
         $config['allowed_types'] = 'gif|jpg|png';
         $config['max_size'] = '600';
@@ -87,7 +87,7 @@ class Pages extends CI_Controller {
 
         $this->load->library('upload', $config);
 
-        if (!$this->upload->do_upload('file')) {
+        if (!$this->upload->do_upload($fieldName)) {
             $error = array('error' => $this->upload->display_errors());
 
             echo json_encode($error);
