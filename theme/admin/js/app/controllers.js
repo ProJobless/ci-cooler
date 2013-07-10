@@ -56,7 +56,6 @@ app.controller('ModulesCreateCtrl', ['$scope', '$routeParams', '$route', '$compi
             });
         };
     }]);
-
 app.controller('ModulesViewCtrl', ['$scope', '$routeParams', '$route', '$compile', function($scope, $routeParams, $route, $compile) {
         $scope.working = true;
         $route.current.templateUrl = site.base + 'admin/modules/renderView/view/' + $routeParams.id;
@@ -70,7 +69,6 @@ app.controller('ModulesViewCtrl', ['$scope', '$routeParams', '$route', '$compile
             });
         });
     }]);
-
 app.controller('ModulesEditCtrl', ['$scope', '$routeParams', '$route', '$compile', function($scope, $routeParams, $route, $compile) {
         $scope.working = true;
         $route.current.templateUrl = site.base + 'admin/modules/renderView/edit/' + $routeParams.id;
@@ -94,7 +92,6 @@ app.controller('ModulesEditCtrl', ['$scope', '$routeParams', '$route', '$compile
             });
         };
     }]);
-
 app.controller('ModulesDeleteCtrl', ['$scope', '$routeParams', '$route', '$compile','$location', function($scope, $routeParams, $route, $compile, $location) {
         $scope.working = true;
         $route.current.templateUrl = site.base + 'admin/modules/renderView/delete/' + $routeParams.id;
@@ -177,7 +174,7 @@ app.controller('ListsCreateCtrl', ['$scope', '$filter', '$routeParams', function
 
         $scope.list = {created: $filter('date')(new Date(), 'yyyy-MM-dd'), title: ''};
         $scope.$watch('list.title', function(value) {
-            $scope.list.internaltitle = $filter('urlify')(value);
+            $scope.list.internaltitle = $filter('safetitle')(value);
         });
 
         $scope.save = function() {
@@ -203,7 +200,7 @@ app.controller('ListsEditCtrl', ['$scope', '$filter', '$routeParams', function($
                 $scope.list = r;
 
                 $scope.$watch('list.title', function(value) {
-                    $scope.list.internaltitle = $filter('urlify')(value);
+                    $scope.list.internaltitle = $filter('safetitle')(value);
                 });
 
                 $scope.working = false;
@@ -228,7 +225,7 @@ app.controller('ListsCreateFieldCtrl', ['$scope', '$routeParams', '$filter', fun
         $scope.working = true;
         $scope.field = {created: $filter('date')(new Date(), 'yyyy-MM-dd'), title: '', type: 1};
         $scope.$watch('field.title', function(value) {
-            $scope.field.internaltitle = $filter('urlify')(value);
+            $scope.field.internaltitle = $filter('safetitle')(value);
         });
 
         $.get(site.base + 'admin/lists/getTypes', function(types) {

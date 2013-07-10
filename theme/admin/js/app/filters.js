@@ -13,6 +13,14 @@ angular.module('myApp.filters', []).
         return text.replace(/(^\-+|[^a-zA-Z0-9\/_| -]+|\-+$)/g, '')
                 .toLowerCase()
                 .replace(/[\/_| -]+/g, '-');
+    };
+})
+        .
+        filter('safetitle', function() {
+    return function(text) {
+        return text.replace(/(^\-+|[^a-zA-Z0-9\/_| -]+|\-+$)/g, '')
+                .toLowerCase()
+                .replace(/[\/_| -]+/g, '');
     }
 })
         .filter('checkmark', function() {
