@@ -79,22 +79,83 @@ class Pages extends CI_Controller {
     }
 
     function upload($fieldName = 'file') {
+
+//        echo json_encode(array($_FILES, count($_FILES)));
+//        die;
+
         $config['upload_path'] = APPPATH . '/uploads/';
         $config['allowed_types'] = 'gif|jpg|png';
-        $config['max_size'] = '600';
+        $config['max_size'] = '2500';
         $config['max_width'] = '3000';
         $config['max_height'] = '2000';
-
         $this->load->library('upload', $config);
 
-        if (!$this->upload->do_upload($fieldName)) {
-            $error = array('error' => $this->upload->display_errors());
-
-            echo json_encode($error);
-        } else {
-            $data = array('upload_data' => $this->upload->data());
-            echo json_encode($data);
+        $errors = array();
+        $upload_data = array();
+        foreach ($_FILES as $key => $value) {
+            
+            if (!empty($key['name'])) {
+                $this->upload->initialize($config);
+                if (!$this->upload->do_upload($key)) {
+                    $errors[] = $this->upload->display_errors();
+                    //flashMsg($errors);
+                } else {
+                    $upload_data[] = $this->upload->data();
+                    // Code After Files Upload Success GOES HERE
+                }
+            }
         }
+        
+        echo json_encode(array('errors' => $errors, 'data' => $upload_data));die;
+
+//        if (!$this->upload->do_upload($fieldName)) {
+//            $error = array('error' => $this->upload->display_errors());
+//
+//            echo json_encode($error);
+//        } else {
+//            $data = array('upload_data' => $this->upload->data());
+//            echo json_encode($data);
+//        }
+
+
+
+        /**
+
+          $config['upload_path'] = 'upload/Main_category_product/';
+          $path=$config['upload_path'];
+          $config['allowed_types'] = 'gif|jpg|jpeg|png';
+          $config['max_size'] = '1024';
+          $config['max_width'] = '1920';
+          $config['max_height'] = '1280';
+          $this->load->library('upload');
+
+          foreach ($_FILES as $key => $value)
+          {
+
+
+          if (!empty($key['name']))
+          {
+
+
+          $this->upload->initialize($config);
+          if (!$this->upload->do_upload($key))
+          {
+
+          $errors = $this->upload->display_errors();
+
+
+          flashMsg($errors);
+
+          }
+          else
+          {
+          // Code After Files Upload Success GOES HERE
+          }
+          }
+          }
+
+         * 
+         */
     }
 
 }

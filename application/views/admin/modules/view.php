@@ -6,11 +6,11 @@
 
 <form ng-submit="save()">
     <div class="row-fluid">
-        <div class="span5">
+        <div class="span12">
             <dl class="dl-horizontal">
                 <?php foreach ($fields as $field):?>
                 <dt><?php echo $field->title ?></dt>
-                <dd>{{item.<?php echo $field->internaltitle ?>}}</dd>
+                <dd><?php echo Content::renderViewField($field) ?></dd>
                 <?php endforeach ?>
             </dl>
         </div>

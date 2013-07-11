@@ -51,7 +51,20 @@ angular.module('myApp.filters', []).
                 return 'unknown';
         }
     };
-});
+})
+
+.filter('images', function(){
+    return function(input){
+        var images = $.parseJSON(input);
+        var html = '';
+        images.forEach(function(el){
+            html +='<img style="max-width:120px;display:inline-block;margin:10px 0;" class="img-polaroid" data-src="' + el + '" src="/ci/application/uploads/' + el + '" />';
+        });
+        
+        console.log(html);
+        return html;
+    }
+})
 
 
 ;

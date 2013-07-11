@@ -11,7 +11,6 @@ label.error{color:#f00;font-size: 9px;margin:0;position: relative;top:-8px;}
 
 
 /** UPLOADER **/
-table { border-collapse: collapse; }
 .percent {
     position: absolute; width: 300px; height: 14px; z-index: 1; text-align: center; font-size: 0.8em; color: white;
 }
@@ -30,19 +29,15 @@ table { border-collapse: collapse; }
     border-image: initial;
 }
 .dropbox {
-    width: 15em;
-    height: 3em;
-    border: 2px solid #DDD;
+    padding-left: 10px;
+    min-height: 40px;
+    padding-top: 10px;
+    border: 1px solid #eee;
     border-radius: 8px;
-    background-color: #FEFFEC;
-    text-align: center;
-    color: #BBB;
-    font-size: 2em;
-    font-family: Arial, sans-serif;
+    background-color: #fafafa;
 }
 .dropbox span {
-    margin-top: 0.9em;
-    display: block;
+    display: inline-block;
 }
 .dropbox.not-available {
     background-color: #F88;

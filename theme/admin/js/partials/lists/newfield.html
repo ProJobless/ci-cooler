@@ -10,7 +10,7 @@
 </div>
 
 <div class="alert alert-success" ng-show="saved">
-    <strong>Field saved</strong>
+    <strong>Field saved :</strong> {{field.title}}
 </div>
 
 <form name="form">
@@ -34,13 +34,20 @@
                 </dd>
                 
                 <dt>Description</dt>
-                <dd><textarea ng-model="field.description" /></dd>
+                <dd><textarea ng-model="field.description" ></textarea></dd>
                 
                 <dt>Is Published ?</dt>
                 <dd><input name="ispublished" ng-checked="page.ispublished" type="checkbox"/></dd>
             </dl>
         </div>
+        <div class="span7" ng-switch="field.type">
+            <div ng-switch-when="5">
+                <div ng-include src="'/ci/theme/admin/js/partials/controls/fields/images.html'"></div>
+            </div>
+        </div>
     </div>
+    <pre>{{attrs}}</pre>
+
 
     <hr/>
     <p class="pull-right">

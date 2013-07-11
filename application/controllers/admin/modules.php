@@ -53,7 +53,7 @@ class Modules extends CI_Controller {
         }
 
         // Todo updates columns
-        echo json_encode(array($response, $module));
+        echo json_encode(array($response,$data, $module));
     }
 
     function DeleteItem($moduleId, $id) {

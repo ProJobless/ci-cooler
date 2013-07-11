@@ -9,7 +9,7 @@
 </div>
 
 <div class="alert alert-success" ng-show="saved">
-    <strong>List saved</strong>
+    <strong><?php echo $term ?> saved</strong>
 </div>
 
 <form ng-submit="save()">
@@ -19,7 +19,7 @@
                 <?php foreach ($fields as $field):?>
                 <dt><?php echo $field->title ?></dt>
                 <dd>
-                    <?php echo Content::renderField($field) ?>
+                    <?php echo Content::renderEditField($field) ?>
                 </dd>
                 <?php endforeach ?>
             </dl>
