@@ -1,0 +1,73 @@
+<div>
+    <h4>Images Attributes</h4>
+    <dl class="dl-horizontal">
+        <dt>Maximum Number</dt>
+        <dd>
+            <input type="text" ng-required="true" ng-model="attrs.max" />
+        </dd>
+
+        <dt>Required</dt>
+        <dd>
+            <input type="checkbox" ng-required="true" ng-model="attrs.required" />
+        </dd>
+
+        <dt>Path</dt>
+        <dd>
+            <div class="input-prepend">
+                <span class="add-on">uploads/</span>
+                <input class="span4"  type="text" ng-model="attrs.path" placeholder="" />
+            </div>
+        </dd>
+
+        <dt>Allowed Extension</dt>
+        <dd>
+            <input type="text" ng-model="attrs.ext" placeholder="png|jpg|gif" />
+        </dd>
+
+        <dt>Max Size</dt>
+        <dd>
+            <div class="input-append">
+                <input class="span4"  type="text" ng-model="attrs.max_size" placeholder="" />
+                <span class="add-on">Kb</span>
+            </div>
+        </dd>
+
+        <dt>Maximum Dimensions</dt>
+        <dd>
+            <div class="input-append">
+                <input class="span4"  type="text" ng-model="attrs.max_width" placeholder="Maximum Width" />
+                <span class="add-on">px</span>
+            </div>
+            <div class="input-append">
+                <input class="span4"  type="text" ng-model="attrs.max_height" placeholder="Maximum Height" />
+                <span class="add-on">px</span>
+            </div>
+        </dd>
+
+        <dt>Create Thumnail ?</dt>
+        <dd>
+            <input type="checkbox" ng-model="attrs.thumbnail" />
+
+            <br/>
+            <br/>
+            <div ng-show="attrs.thumbnail">
+                <table>
+                    <tr>
+                        <td>
+                            <div class="input-append">
+                                <input class="input-mini" ng-model="attrs.thumbnail_width" placeholder="width" type="number" />
+                                <span class="add-on">px</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-append">
+                                <input class="input-mini" ng-model="attrs.thumbnail_height" placeholder="height" type="number" />
+                                <span class="add-on">px</span>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </dd>
+    </dl>
+</div>

@@ -34,10 +34,13 @@ angular.module('myApp.directives', []).
         .directive('upload', function() {
     return {
         restrict: 'A',
-        templateUrl: site.base + 'theme/admin/js/partials/controls/upload.html',
+        templateUrl: site.base + 'theme/admin/js/partials/controls/upload.html?c=1',
         scope: {
             property: '=',
-            upload: '@'
+            upload: '@',
+            max: '@',
+            thumbnail: '@',
+            fieldid: '@'
         },
         link: function(scope, elm, attr) {
 
@@ -49,6 +52,7 @@ angular.module('myApp.directives', []).
             scope.dropText = 'Drop files here...';
             scope.property = [];
             scope.files = [];
+            scope.errors = [];
 
             // init event handlers
             function dragEnterLeave(evt) {
@@ -84,6 +88,9 @@ angular.module('myApp.directives', []).
                 if (files.length > 0) {
                     scope.$apply(function() {
                         for (var i = 0; i < files.length; i++) {
+                            if (scope.files.length == scope.max) {
+                                break;
+                            }
                             scope.files.push(files[i]);
                         }
                     });
@@ -92,12 +99,12 @@ angular.module('myApp.directives', []).
             //============== DRAG & DROP =============
 
             scope.removeFile = function(el) {
-                
+
                 var oldFiles = scope.files;
                 scope.files = [];
-                
-                oldFiles.forEach(function(e){
-                     if (el.file.name !== e.name) {
+
+                oldFiles.forEach(function(e) {
+                    if (el.file.name !== e.name) {
                         scope.files.push(e);
                     }
                 })
