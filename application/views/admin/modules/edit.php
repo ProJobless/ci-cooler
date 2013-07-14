@@ -16,9 +16,25 @@
     <div class="row-fluid">
         <div class="span5">
             <dl class="dl-horizontal">
-                <?php foreach ($fields as $field):?>
-                <dt><?php echo $field->title ?></dt>
-                <dd><?php echo Content::renderEditField($field) ?></dd>
+                <?php foreach ($fields as $field): ?>
+                    <?php if ($field->type < 5) : ?>
+                        <dt><?php echo $field->title ?></dt>
+                        <dd>
+                            <?php echo Content::renderEditField($field) ?>
+                        </dd>
+                    <?php endif ?>
+                <?php endforeach ?>
+            </dl>
+        </div>
+        <div class="span7">
+            <dl class="dl-horizontal">
+                <?php foreach ($fields as $field): ?>
+                    <?php if ($field->type > 5) : ?>
+                        <dt><?php echo $field->title ?></dt>
+                        <dd>
+                            <?php echo Content::renderEditField($field) ?>
+                        </dd>
+                    <?php endif ?>
                 <?php endforeach ?>
             </dl>
         </div>

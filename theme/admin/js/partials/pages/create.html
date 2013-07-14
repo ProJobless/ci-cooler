@@ -43,14 +43,7 @@
             <p>
                 <strong>Picture</strong>
             </p>
-            <input type="file" name="file"></input>
-            <input type="submit"  class="btn btn-primary" value="Upload" 
-                   upload-submit="uploadComplete(content, completed)"></input>
-
-            <!--<div>Completed : {{ completed | checkmark}}</div>-->
-
-            <!--<div class="alert alert-info">Server Response: {{response | json}}</div>-->
-            <img ng-show="response.upload_data.file_name.length > 0" src="/ci/application/uploads/{{response.upload_data.file_name}}" width="180" class="img-polaroid" />
+            <div form="form" working="working" doupload="alert('do upload')"  max="10" upload="http://demo/ci/admin/uploads/upload/32" property="page.images" fieldid="32" name="images">upload</div>
         </div>
     </div>
 

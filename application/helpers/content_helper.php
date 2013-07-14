@@ -23,30 +23,59 @@ class Content {
 
         switch ($field->type) {
             case '1.1':
+                if (isset($attrs)) {
+                    if (isset($attrs->required) && $attrs->required) {
+                        $str = ' required="required"';
+                    }
 
-                if (isset($attrs) && $attrs->required) {
-                    $str = ' required="required"';
-                }
+                    if (isset($attrs->validation)) {
+                        $str .= " type=\"$attrs->validation\"";
+                    } else {
+                        $str .= ' type="text"';
+                    }
 
-                if (isset($attrs) && isset($attrs->validation) && $attrs->validation == 'email') {
-                    $str .= ' type="email"';
-                } else {
-                    $str .= ' type="text"';
-                }
+                    if (isset($attrs->max_len) && $attrs->max_len > 0) {
+                        $str .= ' maxlength="' . $attrs->max_len . '"';
+                    }
 
-                if (isset($attrs) && $attrs->max_len > 0) {
-                    $str .= ' maxlength="' . $attrs->max_len . '"';
-                }
+                    if (isset($attrs->min_len) && $attrs->min_len > 0) {
+                        $str .= ' minlength="' . $attrs->min_len . '"';
+                    }
 
-                if (isset($attrs) && $attrs->max_len > 0) {
-                    $str .= ' minlength="' . $attrs->min_len . '"';
-                }
-
-                if (isset($attrs) && $attrs->default) {
-                    $str .= ' value="' . $attrs->default . '"';
+                    if (isset($attrs->default) && $attrs->default) {
+                        $str .= " ng-init=\"item.$field->internaltitle='$attrs->default'\"";
+                    }
                 }
 
                 $html .="<input $str name=\"$field->internaltitle\" id=\"$field->internaltitle\" ng-model=\"item.$field->internaltitle\" />";
+                break;
+
+            case '1.2':
+                if (isset($attrs)) {
+                    if (isset($attrs->required) && $attrs->required) {
+                        $str = ' required="required"';
+                    }
+
+                    if (isset($attrs->validation)) {
+                        $str .= " type=\"$attrs->validation\"";
+                    } else {
+                        $str .= ' type="text"';
+                    }
+
+                    if (isset($attrs->max_len) && $attrs->max_len > 0) {
+                        $str .= ' maxlength="' . $attrs->max_len . '"';
+                    }
+
+                    if (isset($attrs->min_len) && $attrs->min_len > 0) {
+                        $str .= ' minlength="' . $attrs->min_len . '"';
+                    }
+
+                    if (isset($attrs->default) && $attrs->default) {
+                        $str .= " ng-init=\"item.$field->internaltitle='$attrs->default'\"";
+                    }
+                }
+
+                $html .="<textarea $str name=\"$field->internaltitle\" id=\"$field->internaltitle\" ng-model=\"item.$field->internaltitle\" ></textarea>";
                 break;
             case 2:
                 $html .="<input type=\"number\" name=\"$field->internaltitle\" id=\"$field->internaltitle\" ng-model=\"item.$field->internaltitle\" />";
@@ -57,14 +86,16 @@ class Content {
             case '5.1':
 
                 if (isset($attrs)) {
-                    if ($attrs->required) {
-                        $str .= ' required="required"';
+                    if (isset($attrs->required) && $attrs->required) {
+                        $str .= ' required="true"';
                     }
-                    if ($attrs->max) {
+                    if (isset($attrs->max) && $attrs->max) {
                         $str .= ' max="' . $attrs->max . '"';
+                    } else {
+                        $str .= ' max="30"';
                     }
 
-                    if ($attrs->thumbnail) {
+                    if (isset($attrs->thumbnail) && $attrs->thumbnail) {
 
                         if (!isset($attrs->thumbnail_width)) {
                             $attrs->thumbnail_width = '250';
@@ -76,16 +107,16 @@ class Content {
 
                         $str .= ' thumbnail="' . $attrs->thumbnail_height . ',' . $attrs->thumbnail_width . '"';
                     }
-                    
-                    if(isset($attrs->ext) && $attrs->ext){
-                        $str .= ' ext="'.$attrs->ext.'"';
+
+                    if (isset($attrs->ext) && $attrs->ext) {
+                        $str .= ' ext="' . $attrs->ext . '"';
                     }
                 }
 
 
-                $html .="<div $str upload=\"" . site_url('admin/pages/upload/' . $field->id) . "\" property=\"item.$field->internaltitle\" fieldid=\"$field->id\" name=\"$field->internaltitle\">upload</div>
-                    <pre>{{item.{$field->internaltitle}}}</pre>";
-                break;
+                $html .="<div form=\"form\" working=\"working\" doupload=\"alert('do upload')\" $str upload=\"" . site_url('admin/uploads/upload/' . $field->id) . "\" property=\"item.$field->internaltitle\" fieldid=\"$field->id\" name=\"$field->internaltitle\">upload</div>
+                    <!--<pre>{{item.{$field->internaltitle}}}</pre>-->
+                    ";
                 break;
             case 6:
             default:
@@ -103,13 +134,33 @@ class Content {
             case 3:
                 $html .="{{item.$field->internaltitle}}";
                 break;
-            case 5:
-                $html .= "<div ng-bind-html-unsafe=\"item.{$field->internaltitle} | images\"></div>";
+            case '5.1':
+                $html .= "<div ng-bind-html-unsafe=\"item.{$field->internaltitle} | images_view:0:3\"></div>";
                 break;
                 break;
             case 6:
             default:
-                $html .="<input type=\"text\" name=\"$field->internaltitle\" id=\"$field->internaltitle\" ng-model=\"item.$field->internaltitle\" />";
+                $html .="{{item.$field->internaltitle}}";
+        }
+
+        return $html;
+    }
+
+    public static function renderIndexField($field) {
+        $html = '';
+        switch ($field->type) {
+            case 1:
+            case 2:
+            case 3:
+                $html .="{{item.$field->internaltitle}}";
+                break;
+            case '5.1':
+                $html .= "<div ng-bind-html-unsafe=\"item.{$field->internaltitle} | images_index\"></div>";
+                break;
+                break;
+            case 6:
+            default:
+                $html .="{{item.$field->internaltitle}}";
         }
 
         return $html;

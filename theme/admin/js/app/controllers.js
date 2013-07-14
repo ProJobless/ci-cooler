@@ -228,7 +228,50 @@ app.controller('ModulesDeleteCtrl', ['$scope', '$routeParams', '$route', '$compi
 // Account
 ///////////////
 
-app.controller('AccLoginCtrl', ['$scope', function($scope) {
+app.controller('AccLoginCtrl', ['$scope', '$location', 'AuthService', function($scope, $location, auth) {
+        $scope.signin = function(hardRedirect) {
+            hardRedirect = hardRedirect || false;
+            $scope.errors = [];
+            $.post(site.base + 'admin/account/auth', $scope.model)
+                    .done(function(r) {
+                $scope.$apply(function() {
+                    if (r) {
+                        if (hardRedirect) {
+                            window.location.href= site.base + 'admin/';
+                        } else {
+                            $location.path('/index');
+                        }
+                        auth.isLogged = true;
+                        auth.member = r;
+                    } else {
+                        auth.isLogged = false;
+                        auth.member = false;
+                        $scope.errors.push('Login failed');
+                    }
+                });
+            })
+                    .fail(function() {
+                $scope.$apply(function() {
+                    $scope.errors.push('Login failed');
+                });
+            });
+        }
+    }]);
+
+app.controller('AccLogoutCtrl', ['$scope', '$location', 'AuthService', function($scope, $location, auth) {
+        $scope.done = false;
+        $scope.clazz = 'warning';
+        $scope.message = 'Logging out now';
+        $.post(site.base + 'admin/account/logout')
+                .done(function(r) {
+            $scope.$apply(function() {
+                $scope.done = true;
+                auth.member = null;
+                auth.isLogged = false;
+                $scope.clazz = 'success';
+                $scope.message = 'Logged out ☺';
+            });
+        });
 
     }]);
 
@@ -502,7 +545,7 @@ app.controller('PagesCreateCtrl', ['$scope', '$http', '$filter', '$location', fu
 
         $scope.working = false;
 
-        $scope.page = {created: $filter('date')(new Date(), 'yyyy-MM-dd')};
+        $scope.page = {created: $filter('date')(new Date(), 'yyyy-MM-dd'), meta:'', ispublished:true, images:'[]'};
         $scope.page.title = '';
         $scope.$watch('page.title', function(value) {
             $scope.page.urlpath = $filter('urlify')(value);
@@ -510,13 +553,12 @@ app.controller('PagesCreateCtrl', ['$scope', '$http', '$filter', '$location', fu
 
         $scope.save = function(isDraft, callback) {
 
-            if ($scope.page.title.length == 0)
+            if ($scope.page.title.length === 0)
                 return;
 
             $scope.working = true;
             var isDraft = isDraft || 0;
-
-
+            $scope.page.ispublished = +$scope.page.ispublished;
 
             $scope.page.isdraft = isDraft;
             // check if the page already saved
@@ -564,13 +606,6 @@ app.controller('PagesCreateCtrl', ['$scope', '$http', '$filter', '$location', fu
             });
         }, 3000);
 
-
-        $scope.uploadComplete = function(content, completed) {
-            $scope.completed = completed;
-            $scope.response = content;
-        };
-
-
     }]);
 app.controller('PagesViewCtrl', ['$scope', '$routeParams', '$http', function($scope, $routeParams, $http) {
         $http.get(site.base + 'admin/pages/get/' + $routeParams.pageId).success(function(data) {
@@ -602,10 +637,13 @@ app.controller('PagesDeleteCtrl', ['$scope', '$routeParams', '$http', '$location
 app.controller('PagesEditCtrl', ['$scope', '$routeParams', '$http', '$filter', '$location', function($scope, $routeParams, $http, $filter, $location) {
         $scope.saved = false;
         $scope.working = false;
-
+        
         $http.get(site.base + 'admin/pages/get/' + $routeParams.pageId).success(function(data) {
             data.ispublished = !!data.ispublished;
             $scope.page = data;
+            if(!$scope.page.images || $scope.page.images.length === 0){
+                $scope.page.images = '[]';
+            }
             $scope.$watch('page.title', function(value) {
                 $scope.page.urlpath = $filter('urlify')(value);
             });

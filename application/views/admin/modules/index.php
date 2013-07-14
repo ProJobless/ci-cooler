@@ -24,12 +24,12 @@
     <tr ng-repeat="item in items | filter:searchText">
         <td>{{item.id}}</td>
         <?php foreach ($fields as $field) : ?>
-            <td>{{item.<?php echo $field->internaltitle ?>}}</td>
+        <td><?php echo Content::renderIndexField($field) ?></td>
         <?php endforeach ?>
         <td>
             <a class="btn" href="#/modules/<?php echo $module->id ?>/view/{{item.id}}" >View</a>
-            <a class="btn" href="#/modules/<?php echo $module->id ?>/edit/{{item.id}}" >Edit</a>
-            <a class="btn" href="#/modules/<?php echo $module->id ?>/delete/{{item.id}}" >Delete</a>
+            <a class="btn btn-primary" href="#/modules/<?php echo $module->id ?>/edit/{{item.id}}" >Edit</a>
+            <a class="btn btn-danger" href="#/modules/<?php echo $module->id ?>/delete/{{item.id}}" >Delete</a>
         </td>
     </tr>
 

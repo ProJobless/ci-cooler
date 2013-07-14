@@ -29,6 +29,11 @@
     <div class="span7">
         <strong>Page body</strong>
         <p ng-bind-html="page.body"></p>
+        
+         <p>
+                <strong>Picture</strong>
+            </p>
+            <div ng-bind-html-unsafe="page.images | images_view:0:3"></div>
     </div>
 </div>
 

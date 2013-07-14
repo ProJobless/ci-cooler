@@ -6,6 +6,7 @@ class Lists extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
+        Auth::validate_request();
         $this->load->database();
         $this->load->helper('array');
         $this->load->dbforge();
@@ -62,6 +63,7 @@ class Lists extends CI_Controller {
     function Delete($id) {
         try {
             $list = $this->_getList($id, FALSE, FALSE);
+            $this->db->delete('fields', array('listid' => $id));
             $this->db->delete($this->table, array('id' => $id));
             $this->dbforge->drop_table($list->mapped_table);
             $response = TRUE;
@@ -136,10 +138,10 @@ class Lists extends CI_Controller {
     }
 
     private function _getFieldType($reference) {
-        return $this->db->get_where('fields_types', array('reference' => $reference) ,1)->row();
+        return $this->db->get_where('fields_types', array('reference' => $reference), 1)->row();
     }
-    
-    private function _getFieldDBType($reference){
+
+    private function _getFieldDBType($reference) {
         return json_decode($this->_getFieldType($reference)->db_type);
     }
 

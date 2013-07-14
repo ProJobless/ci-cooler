@@ -8,6 +8,8 @@
     <div class="row-fluid">
         <div class="span12">
             <dl class="dl-horizontal">
+                <dt>Id</dt>
+                <dd>{{item.id}}</dd>
                 <?php foreach ($fields as $field):?>
                 <dt><?php echo $field->title ?></dt>
                 <dd><?php echo Content::renderViewField($field) ?></dd>

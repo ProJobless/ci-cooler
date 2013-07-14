@@ -4,6 +4,7 @@ class Members extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
+        Auth::validate_request();
         $this->load->database();
         $this->load->helper('array');
         header('Content-Type:application/json');
@@ -42,7 +43,7 @@ class Members extends CI_Controller {
 
         $response = FALSE;
 
-        $data = elements(array('login', 'description'), $this->input->post());
+        $data = elements(array('login', 'description' ,'password'), $this->input->post());
 
 
         if (!$id) {
