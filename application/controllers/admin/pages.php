@@ -83,6 +83,9 @@ class Pages extends CI_Controller {
 //        echo json_encode(array($_FILES, count($_FILES)));
 //        die;
 
+        $field = $this->db->get_where('fields', array('id' => $fieldId), 1)->row();
+        $attrs = json_decode($field->$attrs);
+
         $config['upload_path'] = APPPATH . '/uploads/';
         $config['allowed_types'] = 'gif|jpg|png';
         $config['max_size'] = '2500';

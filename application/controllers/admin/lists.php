@@ -161,22 +161,12 @@ class Lists extends CI_Controller {
         return $data;
     }
 
-    private function _getFieldDBType($fieldType) {
-        switch ($fieldType) {
-            case 1:
-                return array('type' => 'VARCHAR', 'constraint' => 255);
-            case 2:
-                return array('type' => 'INT', 'constraint' => 10);
-            case 3:
-                return array('type' => 'TEXT');
-            case 4:
-                return array('type' => 'DATETIME');
-            case 5:
-                return array('type' => 'TEXT');
-            default:
-                return array('type' => 'VARCHAR', 'constraint' => 255);
-                break;
-        }
+    private function _getFieldType($reference) {
+        return $this->db->get_where('fields_types', array('reference' => $reference) ,1)->row();
+    }
+    
+    private function _getFieldDBType($reference){
+        return json_decode($this->_getFieldType($reference)->db_type);
     }
 
 }
