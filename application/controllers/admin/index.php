@@ -1,18 +1,23 @@
 <?php
-class Index extends CI_Controller{
+
+class Index extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        
         //TODO >> Check for logged users
     }
-    
-    function Index(){
-        $this->loadView('index/index', array(), 'admin');
+
+    function Index() {
+        if (!Auth::is_authenticated()) {
+            $this->loadView('account/login', array('skipClientCheck' => TRUE), 'admin');
+        } else {
+            $this->loadView('index/index', array(), 'admin');
+        }
     }
     
-    function JSON(){
-        $types = 
+
+    function JSON() {
+        $types =
                 array(
                     array('type' => 'VARCHAR', 'constraint' => '255'),
                     array('type' => 'TEXT'),
@@ -22,9 +27,9 @@ class Index extends CI_Controller{
                     array('type' => 'INT'),
                     array('type' => 'FLOAT'),
                     array('type' => 'FLOAT'),
-                );
-        
+        );
+
         echo json_encode($types);
-        
     }
+
 }

@@ -1,4 +1,4 @@
-<div class="upload-control" ng-show="files.length < max">
+<div class="upload-control" ng-show="(files.length + uploaded.length) < max">
     <div class="row">
 
     </div>
@@ -20,12 +20,36 @@
             <td><a class="btn btn-mini btn-danger" ng-click="removeFile(this)" >remove</a></td>
         </tr>
     </table>
-    <input type="button" class="btn btn-info" ng-click="uploadFile()" value="Upload" />
+    <p>
+        <input type="button" class="btn btn-mini btn-info" ng-hide="working" ng-click="uploadFile()" value="Upload" />
+    </p>
     <div ng-show="progressVisible">
         <div class="percent">{{progress}}%</div>
-        <div class="progress-bar">
-            <div class="uploaded" ng-style="{'width': progress+'%'}"></div>
+        <div class="progress progress-striped active">
+            <div class="bar" ng-style="{'width': progress+'%'}"></div>
         </div>
     </div>
-
+</div>
+<div ng-show="uploaded.length">
+    <table class="table table-condensed table-hover" style="width: auto">
+        <tr ng-repeat="file in uploaded">
+            <td>
+                <a ng-href="/ci{{file[0].full_path}}" target="_blank">
+                    <strong title="{{file.length-1}} replication(s)"><i class="icon-ext-{{file[0].ext}}"></i>{{file[0].name}}</strong>
+                </a>
+            </td>
+            <td>
+                (<span ng-switch="file[0].size > 1024*1024">
+                    <span ng-switch-when="true">{{file[0].size / 1024 / 1024 | number:2}} MB</span>
+                    <span ng-switch-default>{{file[0].size / 1024 | number:2}} kB</span>
+                </span>)
+            </td>
+            <td><a class="btn btn-mini btn-danger" ng-click="removeFile(this, true)" >remove</a></td>
+        </tr>
+    </table>
+</div>
+<div class="alert" ng-show="response.errors.length">
+    <ul>
+        <li ng-repeat="error in response.errors">{{error}}</li>
+    </ul>
 </div>

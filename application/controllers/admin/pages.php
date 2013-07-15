@@ -7,6 +7,7 @@ class Pages extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
+        Auth::validate_request();
         $this->load->database();
         $this->load->library('form_validation');
         $this->load->helper('array');
@@ -31,7 +32,7 @@ class Pages extends CI_Controller {
     }
 
     function Update($id) {
-        $data = elements(array('title', 'body', 'meta', 'isdraft', 'ispublished'), $this->input->post());
+        $data = elements(array('title', 'body', 'meta', 'isdraft', 'ispublished' ,'urlpath','images'), $this->input->post());
         $this->db->update('pages', $data, array('id' => $id));
         echo json_encode($this->db->affected_rows());
     }
@@ -53,9 +54,10 @@ class Pages extends CI_Controller {
         if ($this->form_validation->run() !== false) {
 
             // Insert into database 
-            $form = elements(array('title', 'body', 'created', 'meta', 'isdraft', 'ispublished'), $this->input->post());
+            $form = elements(array('title', 'body', 'meta', 'isdraft', 'ispublished' ,'urlpath' ,'images'), $this->input->post());
 
             $form['created'] = element('created', $form, date('Y-m-d H:i:s'));
+            $form['createdby'] = Auth::is_authenticated()->login;
             $this->db->insert('pages', $form);
 
             echo json_encode(array('page' => array('id' => $this->db->insert_id())));
@@ -78,13 +80,15 @@ class Pages extends CI_Controller {
         }
     }
 
-    function upload($fieldName = 'file') {
+    function upload($fieldId = FALSE) {
 
 //        echo json_encode(array($_FILES, count($_FILES)));
 //        die;
 
         $field = $this->db->get_where('fields', array('id' => $fieldId), 1)->row();
-        $attrs = json_decode($field->$attrs);
+        $attrs = json_decode($field->attrs);
+        print_r($attrs);
+        die;
 
         $config['upload_path'] = APPPATH . '/uploads/';
         $config['allowed_types'] = 'gif|jpg|png';
@@ -96,7 +100,7 @@ class Pages extends CI_Controller {
         $errors = array();
         $upload_data = array();
         foreach ($_FILES as $key => $value) {
-            
+
             if (!empty($key['name'])) {
                 $this->upload->initialize($config);
                 if (!$this->upload->do_upload($key)) {
@@ -108,8 +112,9 @@ class Pages extends CI_Controller {
                 }
             }
         }
-        
-        echo json_encode(array('errors' => $errors, 'data' => $upload_data));die;
+
+        echo json_encode(array('errors' => $errors, 'data' => $upload_data));
+        die;
 
 //        if (!$this->upload->do_upload($fieldName)) {
 //            $error = array('error' => $this->upload->display_errors());

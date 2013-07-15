@@ -6,6 +6,7 @@ class Fields extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
+        Auth::validate_request();
         $this->load->database();
         $this->load->helper('array');
         $this->load->dbforge();

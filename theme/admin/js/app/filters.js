@@ -53,18 +53,33 @@ angular.module('myApp.filters', []).
     };
 })
 
-.filter('images', function(){
-    return function(input){
+        .filter('images_view', function() {
+    return function(input, replication, limit) {
+        var replication = replication || 1;
+        var limit = limit || 0;
         var images = $.parseJSON(input);
-        var html = '';
-        images.forEach(function(el){
-            html +='<img style="max-width:120px;display:inline-block;margin:10px 0;" class="img-polaroid" data-src="' + el + '" src="/ci/application/uploads/' + el + '" />';
-        });
-        
-        console.log(html);
+        if (images) {
+            var html = '';
+
+            for (var i = 0; i < (limit), i < images.length; i++) {
+                var el = images[i];
+                html += '<img style="max-width:120px;display:inline-block;margin:10px 0;" class="img-polaroid"  src="' + site.base + el[replication].full_path + '" />';
+            }
+            ;
+            if ((images.length - limit) > 0) {
+                html += '<p><small class="text-info">and ' + (images.length - limit) + ' more</small></p>';
+            }
+            return html;
+        }
+    };
+})
+        .filter('images_index', function() {
+    return function(input) {
+        var images = $.parseJSON(input);
+        var html = '<a href="#">' + images.length + (images.length > 1 ? ' images' : ' image') + '</a>';
         return html;
-    }
+    };
 })
 
 
-;
+        ;

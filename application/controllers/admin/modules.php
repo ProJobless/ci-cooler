@@ -6,6 +6,7 @@ class Modules extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
+        Auth::validate_request();
         $this->load->database();
         $this->load->helper('array');
     }
@@ -72,7 +73,7 @@ class Modules extends CI_Controller {
             echo '';
             return;
         }
-        
+
         $this->load->helper('inflector');
         $data['module'] = $this->db->get_where('lists', array('id' => $moduleId), 1)->row();
         $data['fields'] = $this->db->get_where('fields', array('listid' => $moduleId))->result();

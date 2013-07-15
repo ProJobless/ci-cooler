@@ -36,12 +36,10 @@
             <tr>
                 <th>Title</th>
                 <th>Type</th>
-                <th>Attributes</th>
             </tr>
             <tr ng-repeat="field in list.fields | filter:searchField">
                 <td>{{field.title}}</td>
                 <td>{{field.type}}</td>
-                <td>{{field.attrs}}</td>
             </tr>
         </table>
     </div>
