@@ -334,12 +334,13 @@ app.controller('ListsEditCtrl', ['$scope', '$filter', '$routeParams', function($
 app.controller('ListsCreateFieldCtrl', ['$scope', '$routeParams', '$filter', function($scope, $routeParams, $filter) {
         $scope.working = true;
         $scope.attrs = {};
-        $scope.field = {created: $filter('date')(new Date(), 'yyyy-MM-dd'), title: '', type: '1.1'};
+        $scope.field = {created: $filter('date')(new Date(), 'yyyy-MM-dd'), title: '', type: 1};
         $scope.$watch('field.title', function(value) {
             $scope.field.internaltitle = $filter('safetitle')(value);
         });
 
-        $.get(site.base + 'admin/fields/Types', function(types) {
+        $.get(site.base + 'admin/lists/getTypes', function(types) {
+
             $.get(site.base + 'admin/lists/get/' + $routeParams.id, function(r) {
                 $scope.list = r;
                 $scope.$apply(function() {
@@ -352,7 +353,7 @@ app.controller('ListsCreateFieldCtrl', ['$scope', '$routeParams', '$filter', fun
         });
 
         $scope.addField = function() {
-            $scope.field.attrs = JSON.stringify($scope.attrs);
+
             $.post(site.base + 'admin/lists/addField/' + $routeParams.id, $scope.field, function(r) {
                 $scope.$apply(function() {
                     $scope.working = false;

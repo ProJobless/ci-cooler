@@ -18,7 +18,7 @@
             <dl class="dl-horizontal">
                 <?php foreach ($fields as $field):?>
                 <dt><?php echo $field->title ?></dt>
-                <dd><?php echo Content::renderEditField($field) ?></dd>
+                <dd><input type="text" ng-model="item.<?php echo $field->internaltitle ?>" /></dd>
                 <?php endforeach ?>
             </dl>
         </div>

@@ -81,7 +81,33 @@ class Lists extends CI_Controller {
     }
 
     function GetTypes() {
-        echo json_encode($this->db->get('fields_types')->result());
+        $types = array(
+            array(
+                'id' => 1,
+                'label' => 'text'
+            ),
+            array(
+                'id' => 2,
+                'label' => 'number'
+            ),
+            array(
+                'id' => 3,
+                'label' => 'longtext'
+            ),
+            array(
+                'id' => 4,
+                'label' => 'datetime'
+            ),
+            array(
+                'id' => 5,
+                'label' => 'images'
+            ),
+            array(
+                'id' => 6,
+                'label' => 'files'
+            ),
+        );
+        echo json_encode($types);
     }
 
     function AddField($listId) {
@@ -90,12 +116,12 @@ class Lists extends CI_Controller {
 
         // Create new column in the table
         $this->dbforge->add_column($list->mapped_table, array(
-            $field['internaltitle'] => (array) $this->_getFieldDBType($field['type'])
+            $field['internaltitle'] => $this->_getFieldDBType($field['type'])
         ));
 
         $field['listid'] = $listId;
         $this->db->insert('fields', $field);
-        echo json_encode(array($this->db->affected_rows(), $field));
+        return json_encode(array($this->db->affected_rows(), $field));
     }
 
     function DeleteField($fieldId) {
@@ -135,12 +161,22 @@ class Lists extends CI_Controller {
         return $data;
     }
 
-    private function _getFieldType($reference) {
-        return $this->db->get_where('fields_types', array('reference' => $reference) ,1)->row();
-    }
-    
-    private function _getFieldDBType($reference){
-        return json_decode($this->_getFieldType($reference)->db_type);
+    private function _getFieldDBType($fieldType) {
+        switch ($fieldType) {
+            case 1:
+                return array('type' => 'VARCHAR', 'constraint' => 255);
+            case 2:
+                return array('type' => 'INT', 'constraint' => 10);
+            case 3:
+                return array('type' => 'TEXT');
+            case 4:
+                return array('type' => 'DATETIME');
+            case 5:
+                return array('type' => 'TEXT');
+            default:
+                return array('type' => 'VARCHAR', 'constraint' => 255);
+                break;
+        }
     }
 
 }

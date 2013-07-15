@@ -30,7 +30,7 @@
 
                 <dt>Type</dt>
                 <dd>
-                    <select ng-model="field.type" ng-options="type.reference as type.type group by type.category for type in types"></select>
+                    <select ng-model="field.type" ng-options="type.id as type.label for type in types"></select>
                 </dd>
                 
                 <dt>Description</dt>
@@ -40,9 +40,9 @@
                 <dd><input name="ispublished" ng-checked="page.ispublished" type="checkbox"/></dd>
             </dl>
         </div>
-        <div class="span7" ng-switch="field.type > 0">
-            <div ng-switch-when="true">
-                <div ng-include src="'/ci/theme/admin/js/partials/controls/fields/' + field.type + '.html?c=2'"></div>
+        <div class="span7" ng-switch="field.type">
+            <div ng-switch-when="5">
+                <div ng-include src="'/ci/theme/admin/js/partials/controls/fields/images.html'"></div>
             </div>
         </div>
     </div>

@@ -78,13 +78,10 @@ class Pages extends CI_Controller {
         }
     }
 
-    function upload($fieldId = FALSE) {
+    function upload($fieldName = 'file') {
 
 //        echo json_encode(array($_FILES, count($_FILES)));
 //        die;
-
-        $field = $this->db->get_where('fields', array('id' => $fieldId), 1)->row();
-        $attrs = json_decode($field->$attrs);
 
         $config['upload_path'] = APPPATH . '/uploads/';
         $config['allowed_types'] = 'gif|jpg|png';
@@ -96,7 +93,7 @@ class Pages extends CI_Controller {
         $errors = array();
         $upload_data = array();
         foreach ($_FILES as $key => $value) {
-
+            
             if (!empty($key['name'])) {
                 $this->upload->initialize($config);
                 if (!$this->upload->do_upload($key)) {
@@ -108,9 +105,8 @@ class Pages extends CI_Controller {
                 }
             }
         }
-
-        echo json_encode(array('errors' => $errors, 'data' => $upload_data));
-        die;
+        
+        echo json_encode(array('errors' => $errors, 'data' => $upload_data));die;
 
 //        if (!$this->upload->do_upload($fieldName)) {
 //            $error = array('error' => $this->upload->display_errors());
